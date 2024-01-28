@@ -101,9 +101,9 @@ void CocoaInputManager::_parseConfigSettings(ParamList& paramList)
 		}
 	}
     
-        if(paramList.find("MacNonexclusiveMouse") != paramList.end())
+        if(paramList.find("MacNonExclusiveMouse") != paramList.end())
         {
-            if(paramList.find("MacNonexclusiveMouse")->second == "true")
+            if(paramList.find("MacNonExclusiveMouse")->second == "true")
             {
                 mHideMouse = false;
             }

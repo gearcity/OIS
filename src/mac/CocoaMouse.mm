@@ -73,7 +73,7 @@ CocoaMouse::~CocoaMouse()
 void CocoaMouse::_initialize()
 {
 	mState.clear();
-	CGAssociateMouseAndMouseCursorPosition(false);
+	//CGAssociateMouseAndMouseCursorPosition(false);
 }
 
 void CocoaMouse::setBuffered(bool buffered)
@@ -97,8 +97,7 @@ void CocoaMouse::capture()
 		mNeedsToRegainFocus = false;
 
 		// Hide OS Mouse
-		if(!hiddenMouse)
-			CGDisplayHideCursor(kCGDirectMainDisplay);
+		//CGDisplayHideCursor(kCGDirectMainDisplay);
 
 		NSRect clipRect = NSMakeRect(0.0f, 0.0f, 0.0f, 0.0f);
 		clipRect		= [[[self window] contentView] frame];
@@ -143,10 +142,12 @@ void CocoaMouse::capture()
     // Hide OS Mouse
     if(mMouseIsHidden)
     {
+        CGAssociateMouseAndMouseCursorPosition(false);
         CGDisplayHideCursor(kCGDirectMainDisplay);
     }
     else
     {
+        CGAssociateMouseAndMouseCursorPosition(true);
         CGDisplayShowCursor(kCGDirectMainDisplay);
     }
     
@@ -170,13 +171,13 @@ void CocoaMouse::capture()
 		//     NSLog(@"%i %i %i", mTempState.X.rel, mTempState.Y.rel, mTempState.Z.rel);
 
 		// Set new relative motion values
-		state->X.rel = mTempState.X.rel;
-		state->Y.rel = mTempState.Y.rel;
-		state->Z.rel = mTempState.Z.rel;
+		state->X.rel += mTempState.X.rel;
+		state->Y.rel += mTempState.Y.rel;
+		state->Z.rel += mTempState.Z.rel;
 
 		// Update absolute position
-		state->X.abs += mTempState.X.rel;
-		state->Y.abs += mTempState.Y.rel;
+		state->X.abs = mTempState.X.abs;
+		state->Y.abs = mTempState.Y.abs;
 
 		if(state->X.abs > state->width)
 			state->X.abs = state->width;
